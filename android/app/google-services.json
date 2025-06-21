@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "185557586037",
+    "project_id": "loja-freestyle",
+    "storage_bucket": "loja-freestyle.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185557586037:android:612fc0ac1a1fec34f5683c",
+        "android_client_info": {
+          "package_name": "com.grfulltec.freeStyleApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQACTR2jYjVWfvKXDxlyhNgtPH7TDa5S4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
