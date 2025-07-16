@@ -16,9 +16,24 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Entrar'),
+        title: const Text('Entrar', style: TextStyle(fontFamily: "Montserrat", color: Colors.white),),
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
+        actions: [
+          TextButton(
+            onPressed: (){
+              Navigator.of(context).pushReplacementNamed('/signup');
+            }, 
+            child: const Text(
+              'Criar conta',
+              style: TextStyle(
+                fontSize: 14,
+                fontFamily: "Montserrat",
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
       ),
       body: Center(
         child: Card(
@@ -39,6 +54,9 @@ class LoginScreen extends StatelessWidget {
                       ),
                       child: const Text(
                         'Esqueci minha senha',
+                        style: TextStyle(
+                          fontFamily: "Montserrat",
+                        ),
                       ),
                     ),
                   ),
@@ -84,7 +102,7 @@ class LoginScreen extends StatelessWidget {
                           userManager.signIn(
                                 user: User(
                                   email: emailController.text,
-                                  password: passController.text,
+                                  password: passController.text,                    
                                 ),
                                 onFail: (e) {
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -111,7 +129,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                       child: userManager.loading ?
                       const CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white),) :
-                       const Text('Entrar'),
+                       const Text('Entrar', style: TextStyle(fontFamily: "Montserrat"),),
                     ),
                   ),
                 ],

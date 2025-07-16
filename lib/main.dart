@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:loja_free_style/firebase_options.dart';
 import 'package:loja_free_style/model/user_manager.dart';
 import 'package:loja_free_style/screens/base/base_screen.dart';
+import 'package:loja_free_style/screens/signup/signup_screens.dart';
 import 'package:provider/provider.dart';
 
 
@@ -36,14 +37,27 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Detona Surf',
         theme: ThemeData(
-          primaryColor: const Color.fromARGB(255, 4, 125, 141),
-          scaffoldBackgroundColor: const Color.fromARGB(255, 4, 125, 141),
+          primaryColor: const Color.fromARGB(255, 237, 99, 99),
+          scaffoldBackgroundColor: const Color.fromARGB(255, 237, 99, 99),
           visualDensity: VisualDensity.adaptivePlatformDensity,
           appBarTheme: const AppBarTheme(
             elevation: 0,
           ),
         ),
-        home: BaseScreen(),
+        initialRoute: '/base',
+        onGenerateRoute: (settings){
+          switch(settings.name){
+            case '/signup':
+              return MaterialPageRoute(
+                builder: (_) => SignUpScreen()
+              );
+              case '/base':
+              default:
+                return MaterialPageRoute(
+                  builder: (_) => BaseScreen()
+              );
+          }
+        },
       ),
     );
   }

@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loja_free_style/helpers/firebase_errors.dart';
 import 'package:loja_free_style/model/user.dart' as model;
+import 'package:loja_free_style/model/user.dart';
 
 class UserManager extends ChangeNotifier {
 
@@ -11,6 +13,7 @@ class UserManager extends ChangeNotifier {
   }
 
   final firebase_auth.FirebaseAuth auth = firebase_auth.FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   late firebase_auth.User user;
 
@@ -36,6 +39,23 @@ class UserManager extends ChangeNotifier {
     loading = false;
   }
 
+  Future<void> singUp({required User user, required Function onFail, required Function onSuccess}) async{
+    loading = false;
+    try { final firebase_auth.UserCredential result = await auth.createUserWithEmailAndPassword(
+      email: user.email, password: user.password);
+
+      user.id = result.user?.uid;
+
+      await user.saveData();
+
+      onSuccess();
+
+    } on PlatformException catch(e){
+      onFail(getErrorString(e.code));
+    }
+    loading = false;
+  }
+
   set loading(bool value) {
     _loading = value;
     notifyListeners();
@@ -45,7 +65,7 @@ Future<void> _loadCurrentUser() async {
   final firebase_auth.User? currentUser = auth.currentUser;
 
   if (currentUser != null) {
-    user = currentUser;
+    final DocumentSnapshot docUser = await firestore.collection('users').doc(currentUser.uid).get();
   } 
   notifyListeners();
 }
