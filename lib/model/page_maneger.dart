@@ -9,9 +9,16 @@ class PageManeger {
   int page = 0;
 
   void setPage(int value) {
-    if(value == page) return;
+    if (value == page) return;
+
+    if (!_pageController.hasClients) {
+      debugPrint('PageController ainda não está conectado ao PageView.');
+      return;
+    }
+
     page = value;
     _pageController.jumpToPage(value);
   }
+
 
 }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:loja_free_style/model/item_size.dart';
 
 /// Classe que representa um produto no sistema.
 /// Os dados são carregados a partir de um documento do Firestore.
@@ -26,17 +27,17 @@ class Product {
     } else {
       images = []; // Valor padrão seguro caso o campo esteja ausente ou inválido.
     }
+    sizes = (data['sizes'] as List<dynamic>? ?? []).map(
+      (s) => ItemSize.fromMap(s as Map<String, dynamic>)).toList();
+
+      print(sizes);
+    
+
   }
 
-  /// ID único do produto (corresponde ao ID do documento no Firestore).
   late String id;
-
-  /// Nome do produto.
   late String name;
-
-  /// Descrição do produto.
   late String description;
-
-  /// Lista de URLs das imagens do produto.
   late List<String> images;
+  late List<ItemSize> sizes;
 }
