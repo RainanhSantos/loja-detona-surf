@@ -1,74 +1,103 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:loja_free_style/helpers/firebase_errors.dart';
 import 'package:loja_free_style/model/user.dart' as model;
-import 'package:loja_free_style/model/user.dart';
 
 class UserManager extends ChangeNotifier {
-
-  UserManager(){
+  UserManager() {
     _loadCurrentUser();
   }
 
   final firebase_auth.FirebaseAuth auth = firebase_auth.FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  late firebase_auth.User user;
+  model.User? user;
 
   bool _loading = false;
   bool get loading => _loading;
-
-  Future<void> signIn({
-    required model.User user,
-    required void Function(String) onFail,
-    required VoidCallback onSuccess, // VoidCallback = void Function()
-  }) async {
-    loading = true;
-    try {
-      final firebase_auth.UserCredential result = await auth.signInWithEmailAndPassword(
-        email: user.email,
-        password: user.password,
-      );
-      this.user = result.user!;
-      onSuccess();
-    } on PlatformException catch (e) {
-      onFail(getErrorString(e.code));
-    }
-    loading = false;
-  }
-
-  Future<void> singUp({required User user, required Function onFail, required Function onSuccess}) async{
-    loading = false;
-    try { final firebase_auth.UserCredential result = await auth.createUserWithEmailAndPassword(
-      email: user.email, password: user.password);
-
-      user.id = result.user?.uid;
-
-      await user.saveData();
-
-      onSuccess();
-
-    } on PlatformException catch(e){
-      onFail(getErrorString(e.code));
-    }
-    loading = false;
-  }
+  bool get isLoggedIn => user != null;
 
   set loading(bool value) {
     _loading = value;
     notifyListeners();
   }
 
-Future<void> _loadCurrentUser() async {
-  final firebase_auth.User? currentUser = auth.currentUser;
+  /// Login
+  Future<void> signIn({
+    required model.User user,
+    required void Function(String) onFail,
+    required VoidCallback onSuccess,
+  }) async {
+    loading = true;
+    try {
+      final firebase_auth.UserCredential result =
+          await auth.signInWithEmailAndPassword(
+        email: user.email,
+        password: user.password,
+      );
 
-  if (currentUser != null) {
-    final DocumentSnapshot docUser = await firestore.collection('users').doc(currentUser.uid).get();
-  } 
-  notifyListeners();
-}
+      await _loadCurrentUser(firebaseUser: result.user);
 
+      final DocumentSnapshot docUser =
+          await firestore.collection('users').doc(result.user!.uid).get();
+      this.user = model.User.fromDocument(docUser);
 
+      onSuccess();
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      onFail(getErrorString(e.code));
+    } catch (e) {
+      onFail("Erro inesperado: $e");
+    }
+    loading = false;
+  }
+
+  /// Cadastro
+  Future<void> signUp({
+    required model.User user,
+    required void Function(String) onFail,
+    required VoidCallback onSuccess,
+  }) async {
+    loading = true;
+    try {
+      final firebase_auth.UserCredential result =
+          await auth.createUserWithEmailAndPassword(
+        email: user.email,
+        password: user.password,
+      );
+
+      user.id = result.user?.uid;
+      this.user = user;
+
+      await user.saveData();
+
+      onSuccess();
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      onFail(getErrorString(e.code));
+    } catch (e) {
+      onFail("Erro inesperado: $e");
+    }
+    loading = false;
+  }
+
+  /// Logout
+  void signOut() {
+    auth.signOut();
+    user = null;
+    notifyListeners();
+  }
+
+  /// Carrega o usuário logado
+  Future<void> _loadCurrentUser({firebase_auth.User? firebaseUser}) async {
+    final firebase_auth.User? currentUser = firebaseUser ?? auth.currentUser;
+
+    if (currentUser != null) {
+      final DocumentSnapshot docUser =
+          await firestore.collection('users').doc(currentUser.uid).get();
+      user = model.User.fromDocument(docUser);
+      print(user?.name);
+
+      notifyListeners();
+    }
+  }
 }
