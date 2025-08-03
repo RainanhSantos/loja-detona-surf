@@ -12,14 +12,12 @@ class CartProduct extends ChangeNotifier {
     required this.product,
   });
 
-  // Cria um CartProduct a partir de um produto, com id vazio até que o Firestore defina
   CartProduct.fromProduct(this.product)
       : id = '',
         productID = product.id,
         quantity = 1,
         size = product.selectedSize!.name;
 
-  // Constrói a partir de um documento salvo no Firestore
   static Future<CartProduct> fromDocument(DocumentSnapshot document) async {
     final data = document.data()! as Map<String, dynamic>;
 
@@ -48,16 +46,12 @@ class CartProduct extends ChangeNotifier {
   final String size;
   final Product product;
 
-  // Busca a variação de tamanho
   ItemSize? get itemSize => product.findSize(size);
 
-  // Preço unitário
   num get unitPrice => itemSize?.price ?? 0;
 
-  // Preço total
   num get totalPrice => unitPrice * quantity;
 
-  // Transforma o item em mapa para salvar no Firestore
   Map<String, dynamic> toCartItemMap() {
     return {
       'pid': productID,
@@ -66,7 +60,6 @@ class CartProduct extends ChangeNotifier {
     };
   }
 
-  // Verifica se o produto pode ser empilhado no carrinho
   bool stackable(Product product) {
     return product.id == productID &&
         product.selectedSize != null &&
@@ -83,7 +76,6 @@ class CartProduct extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Verifica se ainda há estoque
   bool get hasStock {
     final size = itemSize;
     if (size == null) return false;

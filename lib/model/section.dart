@@ -12,7 +12,7 @@ class Section {
     name = data['name']?.toString() ?? '';
     type = data['type']?.toString() ?? '';
     items = (data['items'] as List?)
-            ?.whereType<Map<String, dynamic>>() // Filtra apenas mapas válidos
+            ?.whereType<Map<String, dynamic>>() 
             .map((i) => SectionItem.fromMap(i))
             .toList() ?? [];
   }

@@ -11,7 +11,6 @@ class PageManeger {
     if (value == page) return;
     page = value;
 
-    // Aguarda o frame atual terminar antes de tentar navegar
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_pageController.hasClients) {
         _pageController.jumpToPage(value);

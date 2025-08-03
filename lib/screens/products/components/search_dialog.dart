@@ -10,7 +10,7 @@ class SearchDialog extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: Align(
-        alignment: Alignment.topCenter, // Posiciona no topo
+        alignment: Alignment.topCenter, 
         child: Container(
           margin: const EdgeInsets.only(top: 2, left: 4, right: 4), // Distância do topo
           decoration: BoxDecoration(
