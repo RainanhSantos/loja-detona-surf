@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:loja_free_style/model/cart_manager.dart';
 import 'package:loja_free_style/model/product.dart';
 import 'package:loja_free_style/model/user_manager.dart';
 import 'package:loja_free_style/screens/product/components/size_widget.dart';
 import 'package:provider/provider.dart';
 
 class ProductScreen extends StatefulWidget {
-  ProductScreen({super.key, this.product});
+  const ProductScreen({super.key, this.product});
 
   final Product? product;
 
@@ -39,6 +40,7 @@ class _ProductScreenState extends State<ProductScreen> {
       value: product,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.white,
           title: Text(product?.name ?? 'Produto'),
           centerTitle: true,
         ),
@@ -105,7 +107,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     ),
                   ),
                   Text(
-                    'R\$ 19.99', // Pode adaptar para product.price se tiver
+                    'R\$ 19.99',
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -143,7 +145,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     }).toList(),
                   ),
                   const SizedBox(height: 20,),
-                  if(product.hasStock)
+                  // if(product.hasStock)
                   Consumer2<UserManager, Product>(
                     builder: (_, userManager, product, __){
                       return SizedBox(
@@ -151,7 +153,8 @@ class _ProductScreenState extends State<ProductScreen> {
                         child: ElevatedButton(
                           onPressed: product.selectedSize != null ? (){
                             if(userManager.isLoggedIn){
-                              //TODO: ADICIONAR AO CARRINHO
+                              context.read<CartManager>().addToCart(product);
+                              Navigator.of(context).pushNamed('/cart');
                             } else {
                               Navigator.of(context).pushNamed('/login');
                             }

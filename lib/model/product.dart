@@ -21,7 +21,6 @@ class Product extends ChangeNotifier {
         .map((s) => ItemSize.fromMap(s as Map<String, dynamic>))
         .toList();
 
-    // Não inicializa o selectedSize aqui: só será setado ao clicar
     _selectedSize = null;
   }
 
@@ -51,4 +50,14 @@ class Product extends ChangeNotifier {
   bool get hasStock{
     return totalStock > 0;
   }
+
+  ItemSize? findSize(String name) {
+    try {
+      return sizes.firstWhere((s) => s.name == name);
+    } catch (_) {
+      return null;
+    }
+  }
+
+
 }
