@@ -22,6 +22,7 @@ User.fromDocument(DocumentSnapshot document) {
   late String email;
   late String password;
   late String? confirmPassword;
+  bool admin = false;
 
   DocumentReference get firestoreRef =>
     FirebaseFirestore.instance.doc('users/$id');
