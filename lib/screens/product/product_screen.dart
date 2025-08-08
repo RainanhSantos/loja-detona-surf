@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:loja_free_style/model/cart_manager.dart';
-import 'package:loja_free_style/model/product.dart';
-import 'package:loja_free_style/model/user_manager.dart';
+import 'package:loja_free_style/models/cart_manager.dart';
+import 'package:loja_free_style/models/product.dart';
+import 'package:loja_free_style/models/user_manager.dart';
 import 'package:loja_free_style/screens/product/components/size_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -43,6 +43,25 @@ class _ProductScreenState extends State<ProductScreen> {
           backgroundColor: Colors.white,
           title: Text(product?.name ?? 'Produto'),
           centerTitle: true,
+          actions: [
+            Consumer<UserManager>(
+              builder: (_, userManager, __){
+                if(userManager.adminEnabled){
+                  return IconButton(
+                    onPressed: (){
+                      Navigator.of(context).pushReplacementNamed(
+                        '/edit_product',
+                        arguments: product,
+                      );
+                    }, 
+                    icon: const Icon(Icons.edit),
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            ),
+          ],
         ),
         backgroundColor: Colors.white,
         body: ListView(

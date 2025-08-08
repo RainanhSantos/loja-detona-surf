@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loja_free_style/helpers/validators.dart';
-import 'package:loja_free_style/model/user.dart';
+import 'package:loja_free_style/models/user.dart';
 import 'package:provider/provider.dart';
-import 'package:loja_free_style/model/user_manager.dart';
+import 'package:loja_free_style/models/user_manager.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loja_free_style/common/custom_drawer/custom_drawer.dart';
-import 'package:loja_free_style/model/page_maneger.dart';
-import 'package:loja_free_style/model/user_manager.dart';
+import 'package:loja_free_style/models/page_maneger.dart';
+import 'package:loja_free_style/models/user_manager.dart';
+import 'package:loja_free_style/screens/admin_users/admin_users_screen.dart';
 import 'package:loja_free_style/screens/home/home_screen.dart';
 import 'package:loja_free_style/screens/products/products_screen.dart';
 import 'package:provider/provider.dart';
@@ -33,10 +34,7 @@ class BaseScreen extends StatelessWidget {
               ),
               if(userManager.adminEnabled)
               ...[
-                Scaffold(
-                  drawer: const CustomDrawer(),
-                  appBar: AppBar(title: const Text('Usuários')),
-                ),
+                AdminUsersScreen(),
                 Scaffold(
                   drawer: const CustomDrawer(),
                   appBar: AppBar(title: const Text('Pedidos')),

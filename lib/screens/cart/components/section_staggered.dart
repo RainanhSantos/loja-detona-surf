@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:loja_free_style/model/section.dart';
+import 'package:loja_free_style/models/section.dart';
 import 'package:loja_free_style/screens/cart/components/item_tile.dart';
 import 'package:loja_free_style/screens/home/components/section_header.dart';
 

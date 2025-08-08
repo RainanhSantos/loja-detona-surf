@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:loja_free_style/model/product.dart';
+import 'package:loja_free_style/models/product.dart';
 
 class ProductManager extends ChangeNotifier{
 

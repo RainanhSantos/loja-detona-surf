@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loja_free_style/common/custom_drawer/custom_drawer_header.dart';
 import 'package:loja_free_style/common/custom_drawer/drawer_tile.dart';
-import 'package:loja_free_style/model/user_manager.dart';
+import 'package:loja_free_style/models/user_manager.dart';
 import 'package:provider/provider.dart';
 
 class CustomDrawer extends StatelessWidget {

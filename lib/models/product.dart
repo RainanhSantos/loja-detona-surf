@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:loja_free_style/model/item_size.dart';
+import 'package:loja_free_style/models/item_size.dart';
 
 class Product extends ChangeNotifier {
   Product.fromDocument(DocumentSnapshot document) {

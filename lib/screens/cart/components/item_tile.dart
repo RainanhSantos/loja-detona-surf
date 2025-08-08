@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:loja_free_style/model/product_manager.dart';
-import 'package:loja_free_style/model/section_item.dart';
+import 'package:loja_free_style/models/product_manager.dart';
+import 'package:loja_free_style/models/section_item.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 

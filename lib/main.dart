@@ -2,42 +2,41 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_free_style/firebase_options.dart';
-import 'package:loja_free_style/model/cart_manager.dart';
-import 'package:loja_free_style/model/home_manager.dart';
-import 'package:loja_free_style/model/product.dart';
-import 'package:loja_free_style/model/product_manager.dart';
-import 'package:loja_free_style/model/user_manager.dart';
+import 'package:loja_free_style/models/admin_users_manager.dart';
+import 'package:loja_free_style/models/cart_manager.dart';
+import 'package:loja_free_style/models/home_manager.dart';
+import 'package:loja_free_style/models/product.dart';
+import 'package:loja_free_style/models/product_manager.dart';
+import 'package:loja_free_style/models/user_manager.dart';
 import 'package:loja_free_style/screens/base/base_screen.dart';
 import 'package:loja_free_style/screens/cart/cart_screen.dart';
+import 'package:loja_free_style/screens/edit_product/edit_product_screen.dart';
 import 'package:loja_free_style/screens/login/login_screen.dart';
 import 'package:loja_free_style/screens/product/product_screen.dart';
 import 'package:loja_free_style/screens/signup/signup_screens.dart';
 import 'package:provider/provider.dart';
 
-
 Future<void> main() async {
-
-WidgetsFlutterBinding.ensureInitialized();
-await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const MyApp());
 
   final DocumentSnapshot document = await FirebaseFirestore.instance
-    .collection('pedidos').doc('964E4Gt7CfgmeCsfQqnR').get();
+      .collection('pedidos')
+      .doc('964E4Gt7CfgmeCsfQqnR')
+      .get();
 
-    print(document.data());
-
+  print(document.data());
 }
 
 class MyApp extends StatelessWidget {
-  
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -61,6 +60,15 @@ class MyApp extends StatelessWidget {
             return manager;
           },
         ),
+        ChangeNotifierProxyProvider<UserManager, AdminUsersManager>(
+          lazy: false,
+          create: (_) => AdminUsersManager(),
+          update: (_, userManager, adminUserManager) {
+            final manager = adminUserManager ?? AdminUsersManager();
+            manager.updateUser(userManager);
+            return manager;
+          },
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -75,37 +83,30 @@ class MyApp extends StatelessWidget {
           ),
         ),
         initialRoute: '/base',
-        onGenerateRoute: (settings){
-          switch(settings.name){
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
             case '/login':
-              return MaterialPageRoute(
-                builder: (_) => LoginScreen()
-              );
+              return MaterialPageRoute(builder: (_) => LoginScreen());
             case '/signup':
-              return MaterialPageRoute(
-                builder: (_) => SignUpScreen()
-              );
+              return MaterialPageRoute(builder: (_) => SignUpScreen());
             case '/product':
               return MaterialPageRoute(
                 builder: (_) => ProductScreen(
                   product: settings.arguments! as Product,
-                )
+                ),
               );
             case '/cart':
-              return MaterialPageRoute(
-                builder: (_) => CartScreen(
-                )
-              );
-              case '/base':
-              default:
-                return MaterialPageRoute(
-                  builder: (_) => BaseScreen()
-              );
+              return MaterialPageRoute(builder: (_) => CartScreen());
+            case '/edit_product':
+              return MaterialPageRoute(builder: (_) => EditProductScreen(
+                product: settings.arguments as Product,
+              ));
+            case '/base':
+            default:
+              return MaterialPageRoute(builder: (_) => BaseScreen());
           }
         },
       ),
     );
   }
 }
-
-

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loja_free_style/common/custom_drawer/custom_drawer.dart';
-import 'package:loja_free_style/model/home_manager.dart';
+import 'package:loja_free_style/models/home_manager.dart';
 import 'package:loja_free_style/screens/cart/components/section_staggered.dart';
 import 'package:loja_free_style/screens/home/components/section_list.dart';
 import 'package:provider/provider.dart';

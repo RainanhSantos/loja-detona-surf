@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:loja_free_style/model/section_item.dart';
+import 'package:loja_free_style/models/section_item.dart';
 
 class Section {
   late String name;

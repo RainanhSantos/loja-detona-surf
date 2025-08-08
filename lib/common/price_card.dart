@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:loja_free_style/model/cart_manager.dart';
+import 'package:loja_free_style/models/cart_manager.dart';
 import 'package:provider/provider.dart';
 
 class PriceCard extends StatelessWidget {

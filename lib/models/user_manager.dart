@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:loja_free_style/helpers/firebase_errors.dart';
-import 'package:loja_free_style/model/user.dart' as model;
+import 'package:loja_free_style/models/user.dart' as model;
 
 class UserManager extends ChangeNotifier {
   UserManager() {
@@ -23,7 +23,7 @@ class UserManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Login
+  
   Future<void> signIn({
     required model.User user,
     required void Function(String) onFail,
@@ -34,7 +34,7 @@ class UserManager extends ChangeNotifier {
       final firebase_auth.UserCredential result =
           await auth.signInWithEmailAndPassword(
         email: user.email,
-        password: user.password,
+        password: user.password ?? "",
       );
 
       await _loadCurrentUser(firebaseUser: result.user);
@@ -52,7 +52,7 @@ class UserManager extends ChangeNotifier {
     loading = false;
   }
 
-  /// Cadastro
+  
   Future<void> signUp({
     required model.User user,
     required void Function(String) onFail,
@@ -63,7 +63,7 @@ class UserManager extends ChangeNotifier {
       final firebase_auth.UserCredential result =
           await auth.createUserWithEmailAndPassword(
         email: user.email,
-        password: user.password,
+        password: user.password?? '',
       );
 
       user.id = result.user?.uid;
@@ -80,14 +80,14 @@ class UserManager extends ChangeNotifier {
     loading = false;
   }
 
-  /// Logout
+  
   void signOut() {
     auth.signOut();
     user = null;
     notifyListeners();
   }
 
-  /// Carrega o usuário logado
+  
   Future<void> _loadCurrentUser({firebase_auth.User? firebaseUser}) async {
     final firebase_auth.User? currentUser = firebaseUser ?? auth.currentUser;
 
