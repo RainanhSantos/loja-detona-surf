@@ -44,6 +44,8 @@ dependencies:
   transparent_image: ^2.0.1
   faker: ^2.2.0
   azlistview: ^2.0.0
+  image_picker: ^1.1.2
+  image_cropper: ^9.1.0
 
 dev_dependencies:
   flutter_test:

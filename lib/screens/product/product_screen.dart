@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:loja_free_style/models/cart_manager.dart';
 import 'package:loja_free_style/models/product.dart';
@@ -45,15 +46,15 @@ class _ProductScreenState extends State<ProductScreen> {
           centerTitle: true,
           actions: [
             Consumer<UserManager>(
-              builder: (_, userManager, __){
-                if(userManager.adminEnabled){
+              builder: (_, userManager, __) {
+                if (userManager.adminEnabled) {
                   return IconButton(
-                    onPressed: (){
+                    onPressed: () {
                       Navigator.of(context).pushReplacementNamed(
                         '/edit_product',
                         arguments: product,
                       );
-                    }, 
+                    },
                     icon: const Icon(Icons.edit),
                   );
                 } else {
@@ -79,11 +80,22 @@ class _ProductScreenState extends State<ProductScreen> {
                           _currentIndex = index;
                         });
                       },
-                      itemBuilder: (_, index) => Image.network(
-                        images[index],
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                      ),
+                      itemBuilder: (_, index) {
+                        final img = images[index];
+                        if (img.startsWith('http') || img.startsWith('https')) {
+                          return Image.network(
+                            img,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          );
+                        } else {
+                          return Image.file(
+                            File(img),
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          );
+                        }
+                      },
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -159,32 +171,35 @@ class _ProductScreenState extends State<ProductScreen> {
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
-                    children: product!.sizes.map((s){
+                    children: product!.sizes.map((s) {
                       return SizeWidget(size: s);
                     }).toList(),
                   ),
-                  const SizedBox(height: 20,),
-                  // if(product.hasStock)
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Consumer2<UserManager, Product>(
-                    builder: (_, userManager, product, __){
+                    builder: (_, userManager, product, __) {
                       return SizedBox(
                         height: 44,
                         child: ElevatedButton(
-                          onPressed: product.selectedSize != null ? (){
-                            if(userManager.isLoggedIn){
-                              context.read<CartManager>().addToCart(product);
-                              Navigator.of(context).pushNamed('/cart');
-                            } else {
-                              Navigator.of(context).pushNamed('/login');
-                            }
-                          } : null, 
+                          onPressed: product.selectedSize != null
+                              ? () {
+                                  if (userManager.isLoggedIn) {
+                                    context.read<CartManager>().addToCart(product);
+                                    Navigator.of(context).pushNamed('/cart');
+                                  } else {
+                                    Navigator.of(context).pushNamed('/login');
+                                  }
+                                }
+                              : null,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: primaryColor,
                           ),
                           child: Text(
-                            userManager.isLoggedIn 
-                            ? 'Adicionar ao Carrinho'
-                            : 'Entre para Comprar',
+                            userManager.isLoggedIn
+                                ? 'Adicionar ao Carrinho'
+                                : 'Entre para Comprar',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 18,
