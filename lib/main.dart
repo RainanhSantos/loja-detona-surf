@@ -90,17 +90,27 @@ class MyApp extends StatelessWidget {
             case '/signup':
               return MaterialPageRoute(builder: (_) => SignUpScreen());
             case '/product':
-              return MaterialPageRoute(
-                builder: (_) => ProductScreen(
-                  product: settings.arguments! as Product,
-                ),
-              );
+              final args = settings.arguments;
+              if (args is Product) {
+                return MaterialPageRoute(
+                  builder: (_) => ProductScreen(product: args),
+                );
+              } else {
+                return MaterialPageRoute(
+                  builder: (_) => Scaffold(
+                    body: Center(
+                      child: Text('Produto inválido!'),
+                    ),
+                  ),
+                );
+              }
             case '/cart':
               return MaterialPageRoute(builder: (_) => CartScreen());
             case '/edit_product':
-              return MaterialPageRoute(builder: (_) => EditProductScreen(
-                product: settings.arguments as Product,
-              ));
+              final args = settings.arguments;
+              Product? p;
+              if (args is Product) p = args;
+              return MaterialPageRoute(builder: (_) => EditProductScreen(p: p));
             case '/base':
             default:
               return MaterialPageRoute(builder: (_) => BaseScreen());

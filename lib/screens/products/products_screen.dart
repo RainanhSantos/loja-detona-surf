@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loja_free_style/common/custom_drawer/custom_drawer.dart';
 import 'package:loja_free_style/models/product_manager.dart';
+import 'package:loja_free_style/models/user_manager.dart';
 import 'package:loja_free_style/screens/products/components/product_list_tile.dart';
 import 'package:loja_free_style/screens/products/components/search_dialog.dart';
 import 'package:provider/provider.dart';
@@ -19,19 +20,30 @@ class ProductsScreen extends StatelessWidget {
             gradient: LinearGradient(
               colors: [
                 Color.fromARGB(255, 211, 118, 130),
-                Color.fromARGB(255, 253, 181, 168)
+                Color.fromARGB(255, 253, 181, 168),
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
           ),
           child: AppBar(
-            backgroundColor: Color.fromARGB(255, 211, 118, 130),
+            backgroundColor: Colors.transparent, // deixa o gradiente visível
             elevation: 0,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.of(context).pop(); // volta para a tela anterior
+              },
+            ),
             title: Consumer<ProductManager>(
               builder: (_, productManager, __) {
                 if (productManager.search.isEmpty) {
-                  return const Text('Produtos');
+                  return const Text(
+                    'Produtos',
+                    style: TextStyle(
+                      fontFamily: 'Playwrite',
+                    ),
+                  );
                 } else {
                   return LayoutBuilder(
                     builder: (_, constraints) {
@@ -91,6 +103,20 @@ class ProductsScreen extends StatelessWidget {
                   }
                 },
               ),
+              Consumer<UserManager>(
+                builder: (_, userManager, __) {
+                  if (userManager.adminEnabled) {
+                    return IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/edit_product');
+                      },
+                      icon: const Icon(Icons.add),
+                    );
+                  } else {
+                    return Container();
+                  }
+                },
+              ),
             ],
           ),
         ),
@@ -103,7 +129,7 @@ class ProductsScreen extends StatelessWidget {
               gradient: LinearGradient(
                 colors: [
                   Color.fromARGB(255, 211, 118, 130),
-                  Color.fromARGB(255, 253, 181, 168)
+                  Color.fromARGB(255, 253, 181, 168),
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -119,7 +145,6 @@ class ProductsScreen extends StatelessWidget {
           );
         },
       ),
-
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
         foregroundColor: Theme.of(context).primaryColor,

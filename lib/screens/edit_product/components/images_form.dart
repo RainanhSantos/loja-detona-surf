@@ -31,6 +31,7 @@ class _ImagesFormState extends State<ImagesForm> {
           }
           return null;
         },
+        onSaved: (images) => widget.product.newImages = images ?? [],
         builder: (state) {
           void onImageSelected(File file) {
             final String path = file.path;
@@ -38,19 +39,14 @@ class _ImagesFormState extends State<ImagesForm> {
             state.value?.add(path);
             widget.product.images.add(path);
 
-            state.didChange(state.value);
-
+            state.didChange(List.from(state.value ?? []));
             setState(() {});
           }
 
           final pages = images.map<Widget>((image) {
-            Widget imageWidget;
-
-            if (image.startsWith('http') || image.startsWith('https')) {
-              imageWidget = Image.network(image, fit: BoxFit.cover);
-            } else {
-              imageWidget = Image.file(File(image), fit: BoxFit.cover);
-            }
+            final imageWidget = (image.startsWith('http'))
+                ? Image.network(image, fit: BoxFit.cover)
+                : Image.file(File(image), fit: BoxFit.cover);
 
             return Stack(
               fit: StackFit.expand,
@@ -65,7 +61,7 @@ class _ImagesFormState extends State<ImagesForm> {
                       setState(() {
                         images.remove(image);
                         widget.product.images.remove(image);
-                        state.didChange(images);
+                        state.didChange(List.from(images));
                       });
                     },
                   ),

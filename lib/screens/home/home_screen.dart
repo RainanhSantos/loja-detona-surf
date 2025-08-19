@@ -34,7 +34,12 @@ class HomeScreen extends StatelessWidget {
                 elevation: 0,
                 backgroundColor: Colors.transparent,
                 flexibleSpace: const FlexibleSpaceBar(
-                  title: Text('Detona Surf'),
+                  title: Text(
+                    'Detona Surf',
+                    style: TextStyle(
+                      fontFamily: 'Playwrite',
+                    ),
+                  ),
                   centerTitle: true,
                 ),
                 actions: [

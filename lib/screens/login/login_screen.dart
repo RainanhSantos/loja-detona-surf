@@ -37,6 +37,30 @@ class LoginScreen extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(height: 20,),
+          const Column(
+            spacing: 2,
+            children: [
+              Text(
+                'Segunda á Sexta: 10h às 18:30',
+                style: TextStyle(
+                  fontFamily: 'Playwrite',
+                ),
+              ),
+              Text(
+                'Sábado até as 18hrs',
+                  style: TextStyle(
+                  fontFamily: 'Playwrite',
+                ),
+              ),
+              Text(
+                'Av Extremidade, 738, Buritizeiro-MG',
+                style: TextStyle(
+                  fontFamily: 'Playwrite',
+                ),
+              ),
+            ],
+          ),
           Expanded(
             child: Center(
               child: Card(
